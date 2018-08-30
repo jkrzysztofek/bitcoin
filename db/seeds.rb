@@ -14,3 +14,11 @@
     ExchangeRate.create(:rate_date => @date_rate, :rate => rate)
 end
 
+def najwiekszy_zysk
+    ExchangeRate.maximum(:rate) - ExchangeRate.minimum(:rate) if rate_date(ExchangeRate.maximum(:rate)) > rate_date(ExchangeRate.minimum(:rate))
+end
+
+
+def najwieksza_strata
+    ExchangeRate.maximum(:rate) - ExchangeRate.minimum(:rate) if rate_date(ExchangeRate.maximum(:rate)) < rate_date(ExchangeRate.minimum(:rate))
+end
