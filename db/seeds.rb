@@ -22,3 +22,9 @@ end
 def najwieksza_strata
     ExchangeRate.maximum(:rate) - ExchangeRate.minimum(:rate) if rate_date(ExchangeRate.maximum(:rate)) < rate_date(ExchangeRate.minimum(:rate))
 end
+
+
+
+date_from = Time.new(2017,10,15)
+date_to = Time.new(2018,3,16)
+scope :checked_time, -> {where("rate_date > ? AND rate_date < ?", time_from, time_to)}

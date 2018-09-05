@@ -1,2 +1,15 @@
-<h1>ExchangeRates</h1>
+<h1>Exchange Rates</h1>
 <p>Minimalny kurs bitcoina w przeciągu ostatnich trzech lat to: <%= @minimum_rate %> dolarów, a maksymalny <%= @maximum_rate %> dolarów.</p>
+
+<%= form_for (:exchange_rate) do |f| %>
+    <div class="form-group">
+    <%= f.label :date_from%>
+    <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
+    <%= f.label :date_to%>
+    <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
+
+    </div>
+    
+  
+  <%= f.submit %>
+<% end %>
