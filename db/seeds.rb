@@ -41,10 +41,11 @@ def self.profit
     ExchangeRate.checked_time.sort_rate_asc.last.rate
 
   end
+  
 
   get date_from, date_to
-  find exchange_rate.minimum (date_from, date_to)
-  find exchange_rate.maximum (date_from, date_to)
+  biggest_profit = exchange_rate.minimum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najmniejszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
+  biggest_loss = exchange_rate.maximum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najwiekszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
 
     if rate_date(exchange_rate.minimum) < rate_date(exchange_rate.maximum)
       exchange_rate.maximum - exchange_rate.minimum = profit
