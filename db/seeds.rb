@@ -28,3 +28,46 @@ end
 date_from = Time.new(2017,10,15)
 date_to = Time.new(2018,3,16)
 scope :checked_time, -> {where("rate_date > ? AND rate_date < ?", time_from, time_to)}
+
+
+
+def self.profit
+    profit = ExchangeRate.sort_rate_desc.first.rate
+    ExchangeRate.checked_time.sort_rate_asc.first.rate
+  end
+
+  def self.loss
+    loss = ExchangeRate.sort_rate_desc.last.rate
+    ExchangeRate.checked_time.sort_rate_asc.last.rate
+
+  end
+
+  get date_from, date_to
+  find exchange_rate.minimum (date_from, date_to)
+  find exchange_rate.maximum (date_from, date_to)
+
+    if rate_date(exchange_rate.minimum) < rate_date(exchange_rate.maximum)
+      exchange_rate.maximum - exchange_rate.minimum = profit
+      find exchange_rate.minimum(rate_date(exchange_rate.maximum), date_to) ==> wyliczyc najwieksza strate
+    else 
+      exchange_rate.maximum - exchange_rate.minimum = loss
+      find exchange_rate.maximum(rate_date(exchange_rate.minimum), date_to) ==> wyliczyc najwiekszy zysk
+
+    end
+
+
+
+
+
+
+    
+  biggest_rate = ExchangeRate.order(rate: :desc).first
+  lowest_rate = ExchangeRate.order(rate: :asc).first
+
+  exchange_rate_with_lowest_price_before_biggest = ExchangeRate.where('rate_date > ?' AND).order(rate: :asc).first
+  exchange_rate_with_biggest_price_after_the_lowest = >
+
+  difference_between_lowest_to_biggest = 
+  difference_between_biggest_to_lowest = 
+
+  Compare which contains the greater difference and return it

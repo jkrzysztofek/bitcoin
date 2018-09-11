@@ -1,15 +1,17 @@
+
 <h1>Exchange Rates</h1>
+
 <p>Minimalny kurs bitcoina w przeciągu ostatnich trzech lat to: <%= @minimum_rate %> dolarów, a maksymalny <%= @maximum_rate %> dolarów.</p>
+<p>Aby obliczyć ile najwięcej mogłeś starcić lub zyskać na bitcoinach w przeciągu ostatnich trzech lat wprowadź zakres dat:</p>
+<br />
 
 <%= form_for (:exchange_rate) do |f| %>
-    <div class="form-group">
-    <%= f.label :date_from%>
+  <div class="form-group">
+    <%= f.label "data od" %>
     <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
-    <%= f.label :date_to%>
+    <%= f.label "data do" %>
     <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
-
-    </div>
-    
-  
-  <%= f.submit %>
+  </div>
+  <%= f.submit "Sprawdź"%>
 <% end %>
+

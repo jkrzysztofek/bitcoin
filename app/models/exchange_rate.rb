@@ -4,15 +4,12 @@ class ExchangeRate < ApplicationRecord
     scope :sort_rate_desc, -> { order(rate: :desc) }
 
 
-
-    def self.najwiekszy_zysk
-        najwiekszy = ExchangeRate.sort_rate_desc.first.rate
-        ExchangeRate.checked_time.sort_rate_asc.first.rate
+    def date_from
+        @date_from = Date.new #czy rate_date.new ?
     end
-
-    def self.najwieksza_strata
-
+    
+    def date_to
+        @date_to = Date.new # czy rate_date.new ?
     end
-
-  
+      
 end
