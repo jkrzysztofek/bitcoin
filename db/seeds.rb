@@ -42,21 +42,24 @@ def self.profit
 
   end
   
+  ***********************
 
-  get date_from, date_to
-  biggest_profit = exchange_rate.minimum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najmniejszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
-  biggest_loss = exchange_rate.maximum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najwiekszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
 
-    if rate_date(exchange_rate.minimum) < rate_date(exchange_rate.maximum)
-      exchange_rate.maximum - exchange_rate.minimum = profit
-      find exchange_rate.minimum(rate_date(exchange_rate.maximum), date_to) ==> wyliczyc najwieksza strate
+  maximum_rate = ExchangeRate.minimum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najmniejszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
+  minimum_rate = ExchangeRate.maximum.where("rate_date > ? AND rate_date < ?", time_from, time_to) #najwiekszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
+
+    if rate_date(:minimum_rate) < rate_date(:maximum_rate)
+      maximum_rate - minimum_rate = profit
+      minimum_rate_after_maximum = ExchangeRate.minimum.where("rate_date > ? AND rate_date < ?", rate_date(:maximum_rate), date_to)
+      maximum_rate -  minimum_rate_after_maximum = loss
+      
     else 
-      exchange_rate.maximum - exchange_rate.minimum = loss
-      find exchange_rate.maximum(rate_date(exchange_rate.minimum), date_to) ==> wyliczyc najwiekszy zysk
-
+      maximum_rate - minimum_rate = loss
+      maximum_rate_after_minimum = ExchangeRate.maximum.where("rate_date > ? AND rate_date < ?", rate_date(:minimum_rate), date_to)
+      maximum_rate_after_minimum - minimum_rate = profit
     end
 
-
+  *****************************
 
 
 
