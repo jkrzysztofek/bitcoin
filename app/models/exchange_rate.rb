@@ -49,9 +49,10 @@ class ExchangeRate < ApplicationRecord
         # najwiekszym zyskiem bedzie roznica miedzy maximum ktore pojawi sie pozniej a minimum
         profit = (maximum_rate_after_minimum - minimum_rate).to_i
       end
-
-      def output
-          "Pomiędzy #{date_from} a #{date_to} mogłeś najwięcej zyskać #{profit} i stracić #{loss}"
-      end
     end
+
+
+  def output
+      "Pomiędzy #{date_from} a #{date_to} mogłeś najwięcej zyskać #{profit} i stracić #{loss}"
+  end
 end
