@@ -2,16 +2,23 @@
 <h1>Exchange Rates</h1>
 
 <p>Minimalny kurs bitcoina w przeciągu ostatnich trzech lat to: <%= @minimum_rate %> dolarów, a maksymalny <%= @maximum_rate %> dolarów.</p>
-<p>Aby obliczyć ile najwięcej mogłeś starcić lub zyskać na bitcoinach w przeciągu ostatnich trzech lat wprowadź zakres dat:</p>
+<p>Aby obliczyć ile najwięcej mogłeś stacić lub zyskać na bitcoinach w przeciągu ostatnich trzech lat wprowadź zakres dat:</p>
 <br />
 
-<%= form_for (:exchange_rate) do |f| %>
+<%= form_for :exchange_rate, url: exchange_rates_path, method: :get do |f| %>
   <div class="form-group">
-    <%= f.label "data od" %>
-    <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
-    <%= f.label "data do" %>
-    <%= f.text_field :rate_date, "data-provide" => 'datepicker' %>
+    <%= f.label "data_od" %>
+    <%= date_field(:rate_date, :date_from, value: "2018-08-30", min: "1946-09-18", max: "2018-08-31"  )   %>
+    <%= f.label "data_do" %>
+    <%= date_field(:rate_date, :date_to, value: "2018-08-31", max: "2018-08-30", max: "2018-08-31" ) %><br />
+    <%= f.submit "Sprawdź" %>
   </div>
-  <%= f.submit "Sprawdź"%>
 <% end %>
+<br />
 
+<% if @exchange %>
+  <p>Największy mozliwy zysk na kursie bitcoinów to w tym zakresie czasu to: <%= @exchange[:profit]/100.00 %> dolarów, 
+  a największa strata: <%= @exchange[:loss]/100.00 %> dolarów. </p>
+<% else %>
+ <%= @error %>
+<% end %>
