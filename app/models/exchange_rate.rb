@@ -6,21 +6,54 @@ class ExchangeRate < ApplicationRecord
   scope :sort_rate_desc, -> { order(rate: :desc) }
 
   def self.calculation(date_from, date_to)
-    maximum_rate = ExchangeRate.where('rate_date > ? AND rate_date < ?', date_from, date_to).order(rate: :desc).first # najmniejszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
-    minimum_rate = ExchangeRate.where('rate_date > ? AND rate_date < ?', date_from, date_to).order(rate: :asc).first # najwiekszy kurs pomiedzy data_od a data_do podanymi przez uzytkownika
-
-    resoult = { loss: 0, profit: 0 } # najwieksza strata w tym czasie bedzie roznica miedzy maximum, a minimum ktore moze pojawic sie pozniej do czasu drugiej daty podanej przez uzytkownika
-
-    if minimum_rate.rate_date < maximum_rate.rate_date # sprawdza czy min kurs wypada wczesniej niz max kurs
-      resoult[:profit] = maximum_rate.rate - minimum_rate.rate # jesli tak roznica jest najwiekszym zyskiem w tym czasie
-      minimum_rate_after_maximum = ExchangeRate.where('rate_date > ? AND rate_date < ?', maximum_rate.rate_date, date_to).order(rate: :asc).first # wyciągasz atrybut z obiektu, nie odwrotnie, czyli maximum_rate.rate_date
-      resoult[:loss] = maximum_rate.rate - minimum_rate_after_maximum.rate if minimum_rate_after_maximum # Chcesz odjać od siebie atrybuty rate, nie całe obiekty, czyli mximum_rate.rate - minimum_rate_after_maximum.rate, wtedy to_i nie jest potrzebne
+    resoult = { loss: 0, profit: 0 }
+    if minimum_rate(date_from, date_to).rate_date < maximum_rate(date_from, date_to).rate_date
+      resoult[:profit] = profit_after_minimum(date_from, date_to)
+      resoult[:loss] = loss_after_minimum(date_from, date_to)
     else
-      resoult[:loss] = maximum_rate.rate - minimum_rate.rate # jesli max wypada pozniej niz min, uzytkownik traci -> najwieksza strata
-      maximum_rate_after_minimum = ExchangeRate.where('rate_date > ? AND rate_date < ?', minimum_rate.rate_date, date_to).order(rate: :desc).first # najwiekszym zyskiem bedzie roznica miedzy maximum ktore pojawi sie pozniej a minimum
-      resoult[:profit] = maximum_rate_after_minimum.rate - minimum_rate.rate if maximum_rate_after_minimum # najwiekszym zyskiem bedzie roznica miedzy maximum ktore pojawi sie pozniej a minimum
+      resoult[:profit] = profit_after_maximum(date_from, date_to)
+      resoult[:loss] = loss_after_maximum(date_from, date_to)
     end
+    resoult
+  end
 
-    resoult 
+  def self.maximum_rate(date_from, date_to)
+    ExchangeRate.checked_time(date_from, date_to).order(rate: :desc).first
+  end
+
+  def self.minimum_rate(date_from, date_to)
+    ExchangeRate.checked_time(date_from, date_to).order(rate: :asc).first
+  end
+
+  def self.maximum_rate_after_minimum(date_from, date_to)
+    ExchangeRate.checked_time(date_from, date_to)
+                .order(rate: :asc)
+                .first
+  end
+
+  def self.minimum_rate_after_maximum(date_from, date_to)
+    ExchangeRate.checked_time(date_from, date_to)
+                .order(rate: :desc)
+                .first
+  end
+
+  def self.profit_after_minimum(date_from, date_to)
+    maximum_rate(date_from, date_to).rate - minimum_rate(date_from, date_to).rate
+  end
+
+  def self.loss_after_minimum(date_from, date_to)
+    min = minimum_rate_after_maximum(date_from, date_to)
+    return unless min
+    maximum_rate(date_from, date_to).rate - min.rate
+  end
+
+  def self.loss_after_maximum(date_from, date_to)
+    maximum_rate(date_from, date_to).rate - minimum_rate(date_from, date_to).rate
+  end
+
+  def self.profit_after_maximum(date_from, date_to)
+    max = maximum_rate_after_minimum(date_from, date_to)
+    return unless max
+    max.rate - minimum_rate(date_from, date_to).rate
   end
 end
