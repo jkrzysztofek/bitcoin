@@ -8,6 +8,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+@date_rate = Time.zone.now
+
 26_280.times do
   @date_rate -= 1.hour
   rate = rand(1..3_000_000)
