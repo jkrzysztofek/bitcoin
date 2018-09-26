@@ -1,14 +1,53 @@
+# frozen_string_literal: true
+
 describe 'ExchangeRate' do
-    it '.calculation' do
-        ExchangeRate.create(rate_date: Time.new(2018,8,1), rate: 20000)
-        ExchangeRate.create(rate_date: Time.new(2018,8,2), rate: 5000)
-        ExchangeRate.create(rate_date: Time.new(2018,8,3), rate: 55000)
-        ExchangeRate.create(rate_date: Time.new(2018,8,4), rate: 6000)
-        ExchangeRate.create(rate_date: Time.new(2018,8,5), rate: 30000)
 
-        results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
-
-        expect(result[:loss]).to eq(14000)
-        expect(result[:profit]) .to eq(25000)
+  def generate_rates(array)
+    array.each.with_index do |rate, i|
+      ExchangeRate.create(rate_date: Time.new(2018, 8, 1, 8, 0, 0) + i.days, rate: rate)
     end
+  end
+
+  describe '.calculation' do
+    it 'test dates min before max' do
+
+      array = generate_rates([20_000, 5000, 55_000, 6000, 30_000])
+      results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
+
+      expect(results[:loss]).to eq(49_000)
+      expect(results[:profit]).to eq(50_000)
+    end
+
+    it '.calculation max before min' do
+      array = generate_rates([9000, 20_000, 55_000, 5000, 30_000])
+      results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
+
+      expect(results[:loss]).to eq(50_000)
+      expect(results[:profit]).to eq(46_000)
+    end
+
+    it '.calculation mixed min and max' do
+      array = generate_rates([5000, 6000, 80_000, 9000, 8000])
+      results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
+
+      expect(results[:loss]).to eq(72_000)
+      expect(results[:profit]).to eq(75_000)
+    end
+
+    it '.calculation ascending rates' do
+      array = generate_rates([10_000, 20_000, 30_000, 40_000, 50_000])
+      results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
+
+      expect(results[:loss]).to eq(0)
+      expect(results[:profit]).to eq(40_000)
+    end
+
+    it '.calculation ascending rates' do
+      array = generate_rates([50_000, 40_000, 30_000, 20_000, 10_000])
+      results = ExchangeRate.calculation(Time.new(2018, 8, 1), Time.new(2018, 8, 6))
+
+      expect(results[:loss]).to eq(40_000)
+      expect(results[:profit]).to eq(0)
+    end
+  end
 end
