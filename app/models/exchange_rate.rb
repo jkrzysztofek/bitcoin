@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class ExchangeRate < ApplicationRecord
+  validates :rate, numericality: { other_than: 0 }
+
   scope :checked_time, ->(date_from, date_to) { where('rate_date >=? AND rate_date <= ?', date_from, date_to) }
   scope :sort_rate_asc, -> { order(rate: :asc) }
   scope :sort_rate_desc, -> { order(rate: :desc) }
 
   def self.calculation(date_from, date_to)
     result = { loss: 0, profit: 0 }
-
     date_max = maximum_rate(date_from, date_to).rate_date
-    date_min = minimum_rate(date_from, date_to).rate_date
 
     if minimum_rate(date_from, date_to).rate_date < maximum_rate(date_from, date_to).rate_date
       result[:profit] = profit_after_minimum(date_from, date_to)
@@ -59,5 +59,16 @@ class ExchangeRate < ApplicationRecord
     min = minimum_rate_before_maximum(date_from, date_max)
     return unless min
     maximum_rate(date_from, date_to).rate - min.rate
+  end
+
+  def self.import
+    @date_rate = Time.zone.new(2018, 9, 28, 8, 0, 0)
+
+    1_825.times do
+      @date_rate -= 1.day
+      @bitcoin_rate = Cryptocompare::PriceHistorical.find('BTC', 'USD', 'ts' => @date_rate.to_time.to_i)
+      ExchangeRate.create(rate_date: @date_rate, rate: @bitcoin_rate.dig('BTC', 'USD'))
+      sleep 1.second
+    end
   end
 end

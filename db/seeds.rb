@@ -11,7 +11,7 @@
 @date_rate = Time.zone.now
 
 26_280.times do
-  @date_rate -= 1.hour
+  @date_rate -= 1.day
   rate = rand(1..3_000_000)
   ExchangeRate.create(rate_date: @date_rate, rate: rate)
 end
