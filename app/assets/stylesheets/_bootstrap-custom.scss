@@ -1,0 +1,57 @@
+.form-group{
+    max-width: 200px;
+    margin: 0 auto;
+    float: none;
+    padding-top: 15px;
+    padding-bottom: 20px;
+}
+
+.btn-main {
+    background-color: #ffffff;
+}
+
+.btn-main { 
+    color: #ffffff; 
+    background-color: #A8A8A8; 
+    border-color: #5C5C5C; 
+  } 
+   
+  .btn-main:hover, 
+  .btn-main:focus, 
+  .btn-main:active, 
+  .btn-main.active, 
+  .open .dropdown-toggle.btn-main { 
+    color: #e7e7e7; 
+    background-color: #CFCFCF; 
+    border-color: #5C5C5C; 
+  } 
+   
+  .btn-main:active, 
+  .btn-main.active, 
+  .open .dropdown-toggle.btn-main { 
+    background-image: none; 
+  } 
+   
+  .btn-main.disabled, 
+  .btn-main[disabled], 
+  fieldset[disabled] .btn-main, 
+  .btn-main.disabled:hover,
+  .btn-main[disabled]:hover, 
+  fieldset[disabled] .btn-main:hover, 
+  .btn-main.disabled:focus, 
+  .btn-main[disabled]:focus, 
+  fieldset[disabled] .btn-main:focus, 
+  .btn-main.disabled:active, 
+  .btn-main[disabled]:active, 
+  fieldset[disabled] .btn-main:active, 
+  .btn-main.disabled.active, 
+  .btn-main[disabled].active, 
+  fieldset[disabled] .btn-main.active { 
+    background-color: #A8A8A8; 
+    border-color: #5C5C5C; 
+  } 
+   
+  .btn-main .badge { 
+    color: #A8A8A8; 
+    background-color: #ffffff; 
+  }

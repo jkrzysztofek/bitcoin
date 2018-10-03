@@ -2,31 +2,27 @@
 
 class ExchangeRatesController < ApplicationController
   def index
-    if date_from < date_to
+    if date_from.nil? && date_to.nil?
+      nil
+    elsif date_from < date_to
       @exchange = ExchangeRate.calculation(date_from, date_to)
     else
       @error = "'Data do' musi występować później niz 'data od'."
     end
 
-    @minimum_rate = ExchangeRate.minimum(:rate) / 100.00
-    @maximum_rate = ExchangeRate.maximum(:rate) / 100.00
+    @minimum_rate = ExchangeRate.minimum(:rate)
+    @maximum_rate = ExchangeRate.maximum(:rate)
   end
 
   private
 
   def date_from
-    if params.dig('rate_date', 'date_from') && params.dig('rate_date', 'date_from') != ''
-      Date.parse(params[:rate_date][:date_from])
-    else
-      Date.new(2018, 8, 30)
-    end
+    return unless params.dig('rate_date', 'date_from') && params.dig('rate_date', 'date_from') != ''
+    Date.parse(params[:rate_date][:date_from])
   end
 
   def date_to
-    if params.dig('rate_date', 'date_to') && params.dig('rate_date', 'date_to') != ''
-      Date.parse(params[:rate_date][:date_to])
-    else
-      Date.new(2018, 8, 31)
-    end
+    return unless params.dig('rate_date', 'date_to') && params.dig('rate_date', 'date_to') != ''
+    Date.parse(params[:rate_date][:date_to])
   end
 end
