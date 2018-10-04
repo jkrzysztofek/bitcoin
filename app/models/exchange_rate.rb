@@ -62,7 +62,7 @@ class ExchangeRate < ApplicationRecord
   end
 
   def self.import
-    @date_rate = Time.zone.new(2018, 9, 28, 8, 0, 0)
+    @date_rate = Time.new(2018, 9, 28, 8, 0, 0).utc
 
     1_825.times do
       @date_rate -= 1.day
