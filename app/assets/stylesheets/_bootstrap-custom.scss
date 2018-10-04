@@ -3,7 +3,7 @@
     margin: 0 auto;
     float: none;
     padding-top: 15px;
-    padding-bottom: 20px;
+    padding-bottom: 100px;
 }
 
 .btn-main {
@@ -54,4 +54,15 @@
   .btn-main .badge { 
     color: #A8A8A8; 
     background-color: #ffffff; 
+  }
+
+  .footer {
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 70px;
+    background-color: #727477;
+    padding: 25px 0;
+    width: 100%;
+ 
   }

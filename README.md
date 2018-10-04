@@ -1,24 +1,41 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# Bitcoin
+
+App for comparing bitcoin exchange rates in last years
+
+## Getting Started
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version 2.5.1
 
-* System dependencies
+* Rails version 5.2.1
 
-* Configuration
+### Installing
 
-* Database creation
+Download zip package and install required gems by running:
 
-* Database initialization
+```
+bundle install
+```
 
-* How to run the test suite
+Database initialization, run:
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+rails db:create db:migrate
+```
 
-* Deployment instructions
+Download bitcoin exchange rates from Cryptocompare Api by typing in rails console:
 
-* ...
+```
+ExchangeRate.import
+```
+
+Finnaly run rails server:
+
+```
+rails server
+```
+
+You can find app now by pointing your browser to http://localhost:3000.
