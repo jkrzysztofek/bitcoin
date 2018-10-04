@@ -4,8 +4,6 @@ class ExchangeRate < ApplicationRecord
   validates :rate, numericality: { other_than: 0 }
 
   scope :checked_time, ->(date_from, date_to) { where('rate_date >=? AND rate_date <= ?', date_from, date_to) }
-  scope :sort_rate_asc, -> { order(rate: :asc) }
-  scope :sort_rate_desc, -> { order(rate: :desc) }
 
   def self.calculation(date_from, date_to)
     result = { loss: 0, profit: 0 }
