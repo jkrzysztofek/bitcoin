@@ -23,11 +23,7 @@ bundle install
 Database initialization, run:
 
 ```
-rails db:create
-```
-
-```
-rails db:migrate
+rails db:create db:migrate
 ```
 
 Download bitcoin exchange rates from Cryptocompare Api by typing in rails console:
