@@ -12,7 +12,6 @@
           <%= f.label "data_od" %>
           <%= date_field(:rate_date, :date_from, min: "2013-09-29", max: "2018-10-01", class:'form-control' ) %>
         </p>
-      
         <p>
           <%= f.label "data_do" %>
           <%= date_field(:rate_date, :date_to, min: "2013-09-30", max: "2018-10-02", class:'form-control' ) %><br />
@@ -22,8 +21,7 @@
     <% end %>
 
     <% if @exchange %>
-      <p>Największy mozliwy zysk na kursie bitcoinów to w tym zakresie czasu to: <%= @exchange[:profit] %> dolarów, 
-      a największa strata: <%= @exchange[:loss] %> dolarów. </p>
+    <p>Największy mozliwy zysk na kursie bitcoinów to w tym zakresie czasu to: <%= @exchange[:profit] %> dolarów, a największa strata: <%= @exchange[:loss] %> dolarów. </p>
     <% else %>
     <%= @error %>
     <% end %>
@@ -33,6 +31,6 @@
 
 <footer class="footer fixed-bottom">
   <div class="container">
-    <p>Bitcoin 2018<p>  
+    <p>Bitcoin 2018</p>
   </div>
 </footer>
